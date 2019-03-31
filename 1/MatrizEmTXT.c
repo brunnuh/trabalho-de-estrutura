@@ -21,7 +21,7 @@ int main(){
 			
 			for(i = 0; i < m; i++){
 				for(j = 0; j < n; j++){
-					printf("%.0f ",Ma[m*i+j]);
+					printf("\t%.0f ",Ma[m*i+j]);
 				}
 				printf("\n");
 			}
