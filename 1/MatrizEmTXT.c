@@ -23,30 +23,51 @@ int menu(void){
 }
 
 
-void *MultAB(int m, int n, int p, int q, float *Vma, float *Vmb){
+float *Transposta(int m, int n, float *Vm){
+	float *Vt;
+	int i, j;
+	Vt = (float*)malloc(n*m*sizeof(float));
+	if(Vt != NULL){
+		for(i = 0; i < n; i++){
+			for(j = 0; j < m; j++){
+				Vt[j*n+i] = Vm[i*m+j]; 
+			}
+		}
+		return Vt;
+	}
+	printf("ERRO, na transposicao.");
+	return NULL;
+}
+
+
+void *MultAB(int n, int m, int p, int q, float *Vma, float *Vmb){
 /*------------------------ Declaraçoes ---------------------------------------*/
 	float *Mc;
 	int i, j, l, k;
 /*------------------------ end Declaraçoes ---------------------------------------*/
-	if(n == p){
-		Mc = (float*)malloc(m*q*sizeof(float));
+	if(m == p){
+		Mc = (float*)malloc(m*p*sizeof(float));
 		if(Mc != NULL){
 			for(i = 0;i < n;i++){
-				for(j = 0; j < p; j++){
-					Mc[p*i+j] = 0.0;
+				for(j = 0; j < q; j++){
+					Mc[n*i+j] = 0.0;
 					for(l = 0;l < m; l++){
-						Mc[p*i+j] += Vma[p*i+l] * Vmb[p*l+j];
+						Mc[n*i+j] += Vma[m*i+l] * Vmb[q*l+j];
 					}
 				}
 			}
+			printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
 			for(i = 0; i < n; i++){
-				for(j = 0; j < p; j++){
-					printf("\t%.0f ",Mc[p*i+j]);
+				for(j = 0; j < q; j++){
+					printf("\t%.0f ",Mc[n*i+j]);
 				}
 				printf("\n");
 			}
+			printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
 			system("pause");
 			system("cls");
+			//return NULL;
+			exit(0);
 		}
 		printf("ERRO NA ALOCACAO DO Mc");
 		return NULL;
@@ -116,6 +137,27 @@ int main(){
 		exit(0);
 	}
 /*------------------------ end (ler matriz Mb) ---------------------------------------*/
+
+
+
+/*------------------------ escrevendo matriz Ma ---------------------------------------*/
+	printf("\n\t-------%ix%i------\n",m,n);
+	for(i = 0; i < m; i++){
+		for(j = 0; j < n; j++){
+			printf("\t%.0f ",Ma[n*i+j]);
+		}
+		printf("\n");
+	}
+	
+	printf("\n\n");
+/*------------------------ escrevendo matriz Mb ---------------------------------------*/
+	printf("\n\t-------%ix%i------\n",p,q);
+	for(i = 0; i < p; i++){
+		for(j = 0; j < q; j++){
+			printf("\t%.0f ",Mb[q*i+j]);
+		}
+		printf("\n");
+	}
 	
 /*------------------------ Opcao ---------------------------------------*/
 	while(opcao != 8){
@@ -128,21 +170,7 @@ int main(){
 	}
 /*------------------------ end opcao ---------------------------------------*/	
 	
-/*------------------------ escrevendo matriz Ma ---------------------------------------
-	for(i = 0; i < m; i++){
-		for(j = 0; j < n; j++){
-			printf("\t%.0f ",Ma[n*i+j]);
-		}
-		printf("\n");
-	}
-	
-	printf("\n\n");
-	for(i = 0; i < p; i++){
-		for(j = 0; j < q; j++){
-			printf("\t%.0f ",Mb[q*i+j]);
-		}
-		printf("\n");
-	}*/
+
 	
 	return 0;
 }
