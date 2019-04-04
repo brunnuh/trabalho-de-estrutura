@@ -24,8 +24,10 @@ int menu(void){
 
 
 float *Transposta(int m, int n, float *Vm){
+/*------------------------ Declaraçoes ---------------------------------------*/
 	float *Vt;
 	int i, j;
+/*------------------------ end Declaraçoes ---------------------------------------*/
 	Vt = (float*)malloc(n*m*sizeof(float));
 	if(Vt != NULL){
 		for(i = 0; i < n; i++){
@@ -40,7 +42,7 @@ float *Transposta(int m, int n, float *Vm){
 }
 
 
-void *MultAB(int n, int m, int p, int q, float *Vma, float *Vmb){
+float *MultAB(int n, int m, int p, int q, float *Vma, float *Vmb){
 /*------------------------ Declaraçoes ---------------------------------------*/
 	float *Mc;
 	int i, j, l, k;
@@ -66,8 +68,8 @@ void *MultAB(int n, int m, int p, int q, float *Vma, float *Vmb){
 			printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
 			system("pause");
 			system("cls");
-			//return NULL;
-			exit(0);
+			return NULL;
+			
 		}
 		printf("ERRO NA ALOCACAO DO Mc");
 		return NULL;
@@ -76,6 +78,50 @@ void *MultAB(int n, int m, int p, int q, float *Vma, float *Vmb){
 		printf("\nNumero de colunas de Ma eh diferente do numero de linhas de Mb");
 		return NULL;
 	}
+}
+
+
+
+void *MultABT(int n,int m,int p,int q,float *Vma,float *Vmb){//Mc = Ma * MbTransposta
+	float *Mc;
+	int i, j, l, k;
+
+
+	Mc = (float*)malloc(m*q*sizeof(float));
+	if(Mc != NULL){
+		Vmb = Transposta(n,m,Vmb);//retorna agora q como linha e p como coluna//
+		if(Vmb != NULL){
+			if(m == q){
+				for(i = 0;i < n;i++){
+					for(j = 0; j < p; j++){
+						Mc[p*i+j] = 0.0;
+						for(l = 0;l < m; l++){
+							Mc[p*i+j] += Vma[m*i+l] * Vmb[p*l+j];
+						}
+					}
+				}
+				printf("\n~~~~~~~~~~~~ Ma x MbT ~~~~~~~~~~~~~\n");
+				for(i = 0; i < n; i++){
+					for(j = 0; j < p; j++){
+						printf("\t%.0f ",Mc[m*i+j]);
+					}
+					printf("\n");
+				}
+				printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+				system("pause");
+				system("cls");
+				return;
+			}
+			else{
+				printf("\nNumero de colunas de Ma eh diferente do numero de linhas da transposta Mb");
+				exit(0);
+			}
+		}
+		printf("ERRO NA TRANSPOSICAO DE Mb");
+		exit(0);
+	}
+	printf("ERRO NA ALOCACAO DO Mc");
+	exit(0);
 }
 
 
@@ -164,6 +210,8 @@ int main(){
 		opcao = menu();
 		if(opcao == 1){
 			MultAB(m,n,p,q,Ma,Mb);
+		}else if(opcao == 2){
+			MultABT(n, m, p, q, Ma, Mb);
 		}else if(opcao == 8){
 			printf("\nFINALIZANDO...");
 		}
