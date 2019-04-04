@@ -50,7 +50,11 @@ void *MultAB(int n, int m, int p, int q, float *Vma, float *Vmb){
 	float *Mc;
 	int i, j, l, k;
 /*------------------------ end Declaraçoes ---------------------------------------*/
-	if(m == p){
+
+
+
+/*------------------------ Multiplicar Ma x Mb ---------------------------------------*/
+	if(m == p){// se coluna de Vma for igual a linha de Vmb. continue
 		Mc = (float*)malloc(m*p*sizeof(float));
 		if(Mc != NULL){
 			for(i = 0;i < n;i++){
@@ -61,19 +65,19 @@ void *MultAB(int n, int m, int p, int q, float *Vma, float *Vmb){
 					}
 				}
 			}
-			printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+			printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n");
 			for(i = 0; i < n; i++){
 				for(j = 0; j < q; j++){
 					printf("\t%.0f ",Mc[n*i+j]);
 				}
 				printf("\n");
 			}
-			printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
-			system("pause");
+			printf("\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+			system("PAUSE");
 			system("cls");
 			return;
-			
 		}
+/*------------------------ end( Multiplicar Ma x Mb )---------------------------------------*/
 		printf("ERRO NA ALOCACAO DO Mc");
 		exit(0);
 	}
@@ -82,7 +86,6 @@ void *MultAB(int n, int m, int p, int q, float *Vma, float *Vmb){
 		exit(0);
 	}
 }
-
 
 
 void *MultABT(int n,int m,int p,int q,float *Vma,float *Vmb){//n - linha, m - coluna, p - linha, q - coluna
@@ -184,29 +187,33 @@ void *TriangSuperiorMa(int n, float *Ma){
 
 
 void *DiagonalMa(int n, int m, float *Ma){
+	
+	
+/*------------------------ Declaracoes ---------------------------------------*/
 	float *Va;
 	int Ndiag, i, j, k = 0, Maior;
 	Ndiag = n;
-	Maior = n;
-	if(Maior < m){
-		Maior = m;
-	}
+	
 	if(Ndiag > m){//recebendo o menor, para gastar o minimo de memoria na alocacao
 		Ndiag = m;
 	}
+/*------------------------end( Declaracoes ) ---------------------------------------*/
+
+
+/*------------------------ Recebendo Diagonal ---------------------------------------*/
 	Va = (float*)malloc(Ndiag*sizeof(float));
 	
 	if(Va != NULL){
 		for(i = 0; i < n; i++){
 			for(j = 0; j < m;j++){
 				if(i == j){
-				
-					Va[k] = Ma[Maior*i+j];
+					Va[k] = Ma[Ndiag*i+j];
 					k++;
 				}
-			}
-				
+			}	
 		}
+/*------------------------ end( Recebendo Diagonal ) ---------------------------------------*/
+/*------------------------ imprimindo Diagonal ---------------------------------------*/
 		system("cls");
 		printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
 		for(i = 0; i < Ndiag; i++){
@@ -215,6 +222,7 @@ void *DiagonalMa(int n, int m, float *Ma){
 		printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
 		system("pause");
 		system("cls");
+/*------------------------ end( imprimindo Diagonal )---------------------------------------*/
 	}else{
 		printf("ERRO, na alocacao de Va\nVerifique...\n");
 		exit(0);
@@ -338,7 +346,7 @@ int main(){
 			if(k > 0 && k <= n){
 				for(i = 0; i < 1; i++){
 					for(j = 0; j < m; j++){
-							printf("%0.f", Ma[0]);
+						printf("%0.f", Ma[0]);
 					}
 				}
 			}
