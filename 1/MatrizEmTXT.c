@@ -27,7 +27,9 @@ float *Transposta(int n, int m, float *Vm){
 /*------------------------ Declaraçoes ---------------------------------------*/
 	float *Vt;
 	int i, j;
-/*------------------------ end Declaraçoes ---------------------------------------*/
+/*------------------------ end Declaraçoes -----------------------------------*/
+
+/*------------------------ Fazendo a transposicao ----------------------------*/
 	Vt = (float*)malloc(n*m*sizeof(float));
 	if(Vt != NULL){
 		for(i = 0; i < m; i++){
@@ -35,23 +37,15 @@ float *Transposta(int n, int m, float *Vm){
 				Vt[m*i+j] = Vm[m*j+i]; 
 			}
 		}
-		/*
-		printf("\n\n");
-		for( i = 0; i < m; i++){
-			for(j = 0; j < n; j++){
-				printf("\t%.0f ",Vt[m*i+j]);
-			}
-			printf("\n");
-		}
-		printf("\n\n");*/
 		return Vt;
+/*------------------------ end( Fazendo a transposicao ) ----------------------*/
 	}
 	printf("ERRO, na transposicao.");
-	exit(0);//finaliza o programa caso de ERRO
+	exit(0);//finaliza o programa em caso de ERRO
 }
 
 
-float *MultAB(int n, int m, int p, int q, float *Vma, float *Vmb){
+void *MultAB(int n, int m, int p, int q, float *Vma, float *Vmb){
 /*------------------------ Declaraçoes ---------------------------------------*/
 	float *Mc;
 	int i, j, l, k;
@@ -77,15 +71,15 @@ float *MultAB(int n, int m, int p, int q, float *Vma, float *Vmb){
 			printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
 			system("pause");
 			system("cls");
-			return NULL;
+			return;
 			
 		}
 		printf("ERRO NA ALOCACAO DO Mc");
-		return NULL;
+		exit(0);
 	}
 	else{
 		printf("\nNumero de colunas de Ma eh diferente do numero de linhas de Mb");
-		return NULL;
+		exit(0);
 	}
 }
 
@@ -98,9 +92,9 @@ void *MultABT(int n,int m,int p,int q,float *Vma,float *Vmb){//n - linha, m - co
 
 	Mc = (float*)malloc(m*q*sizeof(float));
 	if(Mc != NULL){
-		Vmb = Transposta(p,q,Vmb);//retorna agora q como linha e p como coluna//
+		Vmb = Transposta(p,q,Vmb);//retorna agora q como linha e p como coluna
 		if(Vmb != NULL){
-			if(m == q){
+			if(m == q){// se coluna de Vma for igual a Coluna da transposta de Vmb ,continue ..
 				for(i = 0;i < n;i++){
 					for(j = 0; j < p; j++){
 						Mc[n*i+j] = 0.0;
@@ -109,14 +103,14 @@ void *MultABT(int n,int m,int p,int q,float *Vma,float *Vmb){//n - linha, m - co
 						}
 					}
 				}
-				printf("\n~~~~~~~~~~~~ Ma x MbT ~~~~~~~~~~~~~\n");
+				printf("\n~~~~~~~~~~~~ Ma x MbT ~~~~~~~~~~~~~\n\n");
 				for(i = 0; i < n; i++){
 					for(j = 0; j < p; j++){
 						printf("\t%.0f ",Mc[n*i+j]);
 					}
 					printf("\n");
 				}
-				printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+				printf("\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
 				system("pause");
 				system("cls");
 				return;
@@ -206,16 +200,21 @@ void *DiagonalMa(int n, int m, float *Ma){
 		for(i = 0; i < n; i++){
 			for(j = 0; j < m;j++){
 				if(i == j){
+				
 					Va[k] = Ma[Maior*i+j];
 					k++;
 				}
 			}
 				
 		}
-		
+		system("cls");
+		printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
 		for(i = 0; i < Ndiag; i++){
-			printf("%.0f ",Va[i]);
+			printf("\t%.0f ",Va[i]);
 		}
+		printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+		system("pause");
+		system("cls");
 	}else{
 		printf("ERRO, na alocacao de Va\nVerifique...\n");
 		exit(0);
@@ -226,6 +225,7 @@ int main(){
 	int n, m;// n -- linhas, m -- colunas
 	int p, q;// p -- linhas, q -- colunas
 	int i, j;
+	int k;
 	int opcao = -1;
 	float *Ma;//vetor de matriz m x n
 	float *Mb;//Vetor de matriz p x q
@@ -284,7 +284,7 @@ int main(){
 
 
 /*------------------------ escrevendo matriz Ma ---------------------------------------*/
-	printf("\n\t-------%ix%i------\n",n,m);
+	printf("\n\t---------%ix%i--------\n",n,m);
 	for(i = 0; i < n; i++){
 		for(j = 0; j < m; j++){
 			printf("\t%.0f ",Ma[m*i+j]);
@@ -292,9 +292,9 @@ int main(){
 		printf("\n");
 	}
 	
-	printf("\n\n");
+	printf("\n");
 /*------------------------ escrevendo matriz Mb ---------------------------------------*/
-	printf("\n\t-------%ix%i------\n",p,q);
+	printf("\n\t---------%ix%i--------\n",p,q);
 	for(i = 0; i < p; i++){
 		for(j = 0; j < q; j++){
 			printf("\t%.0f ",Mb[q*i+j]);
@@ -309,13 +309,17 @@ int main(){
 	while(1){
 		opcao = menu();
 		if(opcao == 1){
+			system("cls");
 			MultAB(n,m,p,q,Ma,Mb);
 		}else if(opcao == 2){
+			system("cls");
 			MultABT(n, m, p, q, Ma, Mb);
 		}else if(opcao == 3){
+			system("cls");
 			TranspostaMa(n,m,Ma);
 		}else if(opcao == 4){
 			if(n == m){
+				system("cls");
 				TriangSuperiorMa(n,Ma);
 			}else{
 				system("cls");
@@ -328,6 +332,17 @@ int main(){
 			
 		}else if(opcao == 5){
 			DiagonalMa(n, m , Ma);
+		}else if(opcao == 6){
+			printf("Digite a linha que deseja: ");
+			scanf("%i*c",&k);
+			if(k > 0 && k <= n){
+				for(i = 0; i < 1; i++){
+					for(j = 0; j < m; j++){
+							printf("%0.f", Ma[0]);
+					}
+				}
+			}
+			
 		}else if(opcao == 8){
 			printf("\nFINALIZANDO...");
 			break;
