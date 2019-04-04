@@ -204,15 +204,13 @@ void *DiagonalMa(int n, int m, float *Ma){
 	Va = (float*)malloc(Ndiag*sizeof(float));
 	
 	if(Va != NULL){
-		for(i = 0; i < n; i++){
-			for(j = 0; j < m;j++){
-				if(i == j){
-					Va[k] = Ma[Ndiag*i+j];
-					k++;
-				}
-			}	
+		for(i = 0; i < Ndiag; i++){
+			Va[i] = Ma[m*i+k];
+			k++;
 		}
 /*------------------------ end( Recebendo Diagonal ) ---------------------------------------*/
+
+
 /*------------------------ imprimindo Diagonal ---------------------------------------*/
 		system("cls");
 		printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
