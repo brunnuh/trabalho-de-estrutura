@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <conio.h>
 #include <math.h>
+
 int menu(void){
 /*------------------------ Declaraçoes ---------------------------------------*/
 	int opc = -1;	
@@ -21,7 +22,6 @@ int menu(void){
 	}
 	return 0;
 }
-
 
 float *Transposta(int n, int m, float *Vm){
 /*------------------------ Declaraçoes ---------------------------------------*/
@@ -43,7 +43,6 @@ float *Transposta(int n, int m, float *Vm){
 	printf("ERRO, na transposicao.");
 	exit(0);//finaliza o programa em caso de ERRO
 }
-
 
 void *MultAB(int n, int m, int p, int q, float *Vma, float *Vmb){
 /*------------------------ Declaraçoes ---------------------------------------*/
@@ -86,7 +85,6 @@ void *MultAB(int n, int m, int p, int q, float *Vma, float *Vmb){
 		exit(0);
 	}
 }
-
 
 void *MultABT(int n,int m,int p,int q,float *Vma,float *Vmb){//n - linha, m - coluna, p - linha, q - coluna
 	float *Mc;
@@ -185,7 +183,6 @@ void *TriangSuperiorMa(int n, float *Ma){
 	
 }
 
-
 void *DiagonalMa(int n, int m, float *Ma){
 	
 	
@@ -198,7 +195,6 @@ void *DiagonalMa(int n, int m, float *Ma){
 		Ndiag = m;
 	}
 /*------------------------end( Declaracoes ) ---------------------------------------*/
-
 
 /*------------------------ Recebendo Diagonal ---------------------------------------*/
 	Va = (float*)malloc(Ndiag*sizeof(float));
@@ -226,6 +222,12 @@ void *DiagonalMa(int n, int m, float *Ma){
 		exit(0);
 	}
 }
+
+
+
+
+
+
 int main(){
 /*------------------------ Declaraçoes ---------------------------------------*/
 	int n, m;// n -- linhas, m -- colunas
@@ -342,14 +344,28 @@ int main(){
 			printf("Digite a linha que deseja: ");
 			scanf("%i*c",&k);
 			if(k > 0 && k <= n){
-				for(i = 0; i < 1; i++){
-					for(j = 0; j < m; j++){
-						printf("%0.f", Ma[0]);
-					}
+				system("cls");
+				k--; // para aparecer a linha que o usuario pediu, nao a posicao que o computador dar
+				for(i = 0; i < n; i++){
+						printf("\t%0.f ", Ma[k * m + i]);
+				}
+			}	
+		}
+		
+		else if(opcao == 7){
+			printf("Digite a coluna que deseja: ");
+			scanf("%i*c",&k);
+			if(k > 0 && k <= m){
+				//system("cls");
+				k--;
+				for(i = 0; i < n; i++){
+					printf("\t%0.f ", Ma[n * i + k]);
 				}
 			}
-			
-		}else if(opcao == 8){
+		
+		
+		}
+		else if(opcao == 8){
 			printf("\nFINALIZANDO...");
 			break;
 		}
