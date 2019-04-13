@@ -1,6 +1,7 @@
 #define _cofo_h_
-
-
+#define True 1
+#define False 0
+int Gcriado;
 typedef struct _cofo_ cofo;
 #ifdef _cofo_c
 	cofo *CofCreate(int n);

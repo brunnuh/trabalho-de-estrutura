@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "cofo.h"
+#define True 1
+#define False 0
+
 typedef struct _dados_{
 	char nome[30];
 	int idade;
@@ -10,7 +13,9 @@ typedef struct _dados_{
 }dados;
 
 void cadastro(dados *pessoa){
-
+	if(Gcriado == False){
+		printf("\nCuidado, seus dados estao sendo sobreposto\nPorfavor, crie um cofo.\n");
+	}
 	printf("Nome: ");
 	scanf("%s*c",&(pessoa -> nome));
 	printf("Idade: ");
@@ -31,8 +36,10 @@ int main(){
 //---------- declaracoes -----------------------
 	cofo *usuarios;
 	dados *pessoa;
-	int retorno;
+	int RespInse;
 	int opcao = -1;
+	int NumPessoas;
+	int scap = 0;
 //---------- end(declaracoes) ------------------	
 
 //---------- Menu -----------------------	
@@ -44,34 +51,62 @@ int main(){
 			pessoa = (dados*)malloc(sizeof(dados));
 			if(pessoa != NULL){
 				cadastro(pessoa);
-			}else{
+			}
+			else{
 				printf("ERRO, alocacao de pessoa...");
 				exit(0);
 			}
+		}
+		else if(opcao == 2){
+			printf("Numero maximo de pessoas no cofo: ");
+			scanf("%d*c",&NumPessoas);
+			usuarios = CofCreate(NumPessoas);// ps: fazer pergunta para o usuario de quantos dados podem ser guardados
+			if(usuarios == NULL){
+				printf("ERRO, na criacao do cofo");
+				CofDestroy(usuarios);
+				exit(0);
+			}
+			else{
+				system("cls");
+				printf("\n--Cofo criado com sucesso--\n\n");
+				scap = 1;
+				system("PAUSE");
+			}
+		}
+		else if(opcao == 3){
+			printf("ainda nao foi criada");
+		}
+		else if(opcao == 4){
+			if(scap == 1){//mudar
+				if(pessoa != NULL){
+					RespInse = CofInsert(usuarios,(void*)pessoa);
+					if(RespInse == 1){
+						printf("\nAdicionado ao usuario");
+					}
+					else{
+						printf("\nNao foi adicionado ao usuario");
+					}		
+				}
+				else{
+					printf("\nERRO, alocacao de pessoa ou ainda nao foi alocada...");
+					exit(0);
+				}	
+			}
+			else{
+				printf("ERRO, criacao do cofo ou nao existe...");
+				exit(0);
+			}
+		}
+		else if(opcao == 5){
 			
-		}else if(opcao > 7 || opcao < 0){
-			printf("ERRO, opcao nao existe...\nTente Novamente.\n");
+		}
+		else if(opcao > 7 || opcao < 0){
+			printf("\nERRO, opcao nao existe...\nTente Novamente.\n");
 			system("PAUSE");
 		}
 		
 	}
 //---------- end(Menu) -----------------------	
-	/*
-	usuarios = CofCreate(10);// ps: fazer pergunta para o usuario de quantos dados podem ser guardados
-	if(usuarios != NULL){
-		pessoa = (dados*)malloc(sizeof(dados));
-		if(pessoa != NULL){
-			pessoa->idade = 10;
-			retorno = CofInsert(usuarios,(void*)pessoa);	
-			if(retorno == 1){
-				printf("\nAdicionado ao usuario");
-			}else{
-				printf("\nNao foi adicionado ao usuario");
-			}
-		}
-	}else{
-		printf("\nERRO NA CRIACAO DOS USUARIOS");
-	}
-	*/
+	
 	return 0;
 }

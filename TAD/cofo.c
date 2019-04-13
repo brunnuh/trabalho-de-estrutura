@@ -3,9 +3,9 @@
 #include "cofo.h"
 #define True 1
 #define False 0
-
 #define _cofo_c
 
+int Gcriado = False;
 
 //-------------------------- estruturas --------------------------------------------
 
@@ -26,6 +26,7 @@ cofo *CofCreate(int n){
 		if(c != NULL){
 			c -> Nelementos = 0;// inicia numero de elementos ocupado com zero
 			c -> max = n;// inicia numero maximo de elementos do vetor com n elementos
+			Gcriado = True;
 			return c;
 		}else{
 			free(c);//caso dê erro na alocacao, libere
@@ -51,6 +52,7 @@ int CofDestroy(cofo *c){
 		if(c->Nelementos == 0){// se o vetor estiver vazio
 			free(c->elementos);//libere o vetor de elementos
 			free(c);//libere a estrutura
+			Gcriado = False;
 			return True;
 		}
 		return False;
