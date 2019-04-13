@@ -38,8 +38,7 @@ int main(){
 	dados *pessoa;
 	int RespInse;
 	int opcao = -1;
-	int NumPessoas;
-	int scap = 0;
+	int NumPessoas, LibPessoa = False;
 //---------- end(declaracoes) ------------------	
 
 //---------- Menu -----------------------	
@@ -48,12 +47,18 @@ int main(){
 		printf("1 - Inserir pessoa\n2 - Criar Cofo\n3 - Destruir Cofo\n4 - Inserir ultimos dados cadastrados no Cofo\n5 - Consultar Dados De um usuario pelo cpf\n6 - Remover Dados De um usuario pelo cpf\n7 - Mostrar Cofo Completo\n0 - Sair\n>>>>");
 		scanf("%i*c",&opcao);
 		if(opcao == 1){
+			if(LibPessoa == True){
+				free(pessoa);
+				LibPessoa = False;
+			}
 			pessoa = (dados*)malloc(sizeof(dados));
 			if(pessoa != NULL){
 				cadastro(pessoa);
+				LibPessoa = True;
 			}
 			else{
 				printf("ERRO, alocacao de pessoa...");
+				free(pessoa);
 				exit(0);
 			}
 		}
@@ -69,17 +74,26 @@ int main(){
 			else{
 				system("cls");
 				printf("\n--Cofo criado com sucesso--\n\n");
-				scap = 1;
 				system("PAUSE");
 			}
 		}
 		else if(opcao == 3){
-			printf("ainda nao foi criada");
+			if(Gcriado == True){
+				CofDestroy(usuarios);
+				system("cls");
+				printf("\n--Cofo Destruido com sucesso--\n\n");
+				system("PAUSE");
+			}else{
+				system("cls");
+				printf("\nERRO, cofo nao foi criado ou foi apagado\n\n");
+				system("PAUSE");
+			}
 		}
 		else if(opcao == 4){
-			if(scap == 1){//mudar
+			if(Gcriado == True){
 				if(pessoa != NULL){
 					RespInse = CofInsert(usuarios,(void*)pessoa);
+					free(pessoa);
 					if(RespInse == 1){
 						printf("\nAdicionado ao usuario");
 					}

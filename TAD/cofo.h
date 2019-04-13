@@ -1,4 +1,4 @@
-#define _cofo_h_
+#define _cofo_h
 #define True 1
 #define False 0
 int Gcriado;
