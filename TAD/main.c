@@ -39,10 +39,12 @@ int main(){
 	int RespInse;
 	int opcao = -1;
 	int NumPessoas, LibPessoa = False;
+
+
 //---------- end(declaracoes) ------------------	
 
 //---------- Menu -----------------------	
-	while(opcao != 0){
+   	while(opcao != 0){
 		system("cls");
 		printf("1 - Inserir pessoa\n2 - Criar Cofo\n3 - Destruir Cofo\n4 - Inserir ultimos dados cadastrados no Cofo\n5 - Consultar Dados De um usuario pelo cpf\n6 - Remover Dados De um usuario pelo cpf\n7 - Mostrar Cofo Completo\n0 - Sair\n>>>>");
 		scanf("%i*c",&opcao);
@@ -91,14 +93,18 @@ int main(){
 		}
 		else if(opcao == 4){
 			if(Gcriado == True){
-				if(pessoa != NULL){
+				if(pessoa != NULL && LibPessoa == False){
 					RespInse = CofInsert(usuarios,(void*)pessoa);
 					free(pessoa);
 					if(RespInse == 1){
+						system("cls");
 						printf("\nAdicionado ao usuario");
+						system("PAUSE");
 					}
 					else{
+						system("cls");
 						printf("\nNao foi adicionado ao usuario");
+						system("PAUSE");
 					}		
 				}
 				else{

@@ -8,13 +8,14 @@
 int Gcriado = False;
 
 //-------------------------- estruturas --------------------------------------------
-
+/*
 typedef struct _cofo_{ //tipo de estrutura que sera usado para adc as pessoas
 	void** elementos; // elemento do vetor
 	int max; //numero maximo de elementos no vetor.
 	int Nelementos; // numero de elementos ocupado no max.
 }cofo;
 //-------------------------- end(estruturas) ----------------------------------------
+*/
 
 
 
@@ -55,7 +56,13 @@ int CofDestroy(cofo *c){
 			Gcriado = False;
 			return True;
 		}
-		return False;
 	}
+	return False;
+}
+int CofExist(cofo *c){// como saber se ele ja foi criado, sendo que nao tem como testar != NULL
+	if(c -> max > 0){
+		return True;
+	}	
+	return False;
 }
 //-------------------------- end(funcoes) ---------------------------------------------
