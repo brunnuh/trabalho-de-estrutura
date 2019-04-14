@@ -12,6 +12,18 @@ typedef struct _dados_{
 	double cpf;
 }dados;
 
+int CompCPF(void *cpf, void *aluno){
+	int *key;
+	dados *alun;
+	key = (int*)cpf;
+	alun = (dados*)aluno;
+	if(*key == alun -> cpf){
+		return True;
+	}else{
+		return False;
+	}
+}
+
 void cadastro(dados *pessoa){
 	if(Gcriado == False){
 		printf("\nCuidado, seus dados estao sendo sobreposto\nPorfavor, crie um cofo.\n");
@@ -35,7 +47,7 @@ void cadastro(dados *pessoa){
 int main(){
 //---------- declaracoes -----------------------
 	cofo *usuarios;
-	dados *pessoa;
+	dados *pessoa, *RespQuery;
 	int RespInse;
 	int opcao = -1;
 	int NumPessoas, LibPessoa = False;
@@ -93,12 +105,12 @@ int main(){
 		}
 		else if(opcao == 4){
 			if(Gcriado == True){
-				if(pessoa != NULL && LibPessoa == False){
+				if(pessoa != NULL){
 					RespInse = CofInsert(usuarios,(void*)pessoa);
 					free(pessoa);
 					if(RespInse == 1){
 						system("cls");
-						printf("\nAdicionado ao usuario");
+						printf("\nAdicionado ao usuario\n");
 						system("PAUSE");
 					}
 					else{
@@ -118,7 +130,18 @@ int main(){
 			}
 		}
 		else if(opcao == 5){
-			
+			if(Gcriado == True){
+				RespQuery = (dados*)(usuarios,(void*)0,CompCPF);
+				if(RespQuery != NULL){
+					system("cls");
+					printf("\nnome:%s\ncpf:%d\n", RespQuery->nome, RespQuery->cpf);
+					system("PAUSE");
+				}
+				else{
+					printf("\nNao Achou...");
+					exit(0);
+				}
+			}
 		}
 		else if(opcao > 7 || opcao < 0){
 			printf("\nERRO, opcao nao existe...\nTente Novamente.\n");

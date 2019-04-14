@@ -8,14 +8,15 @@
 int Gcriado = False;
 
 //-------------------------- estruturas --------------------------------------------
-/*
+
 typedef struct _cofo_{ //tipo de estrutura que sera usado para adc as pessoas
-	void** elementos; // elemento do vetor
+	void* *elementos; // elemento do vetor
 	int max; //numero maximo de elementos no vetor.
 	int Nelementos; // numero de elementos ocupado no max.
+	int cmp; //
 }cofo;
 //-------------------------- end(estruturas) ----------------------------------------
-*/
+
 
 
 
@@ -50,7 +51,7 @@ int CofInsert(cofo *c, void* n){// vetor , numero à ser add
 
 int CofDestroy(cofo *c){
 	if(c != NULL){
-		if(c->Nelementos == 0){// se o vetor estiver vazio
+		if(c-> Nelementos == 0){// se o vetor estiver vazio
 			free(c->elementos);//libere o vetor de elementos
 			free(c);//libere a estrutura
 			Gcriado = False;
@@ -64,5 +65,25 @@ int CofExist(cofo *c){// como saber se ele ja foi criado, sendo que nao tem como
 		return True;
 	}	
 	return False;
+}
+
+void *CofQuery(cofo *c, void *key, int(*cmp)(void*a,void*b)){
+	void *aux;
+	int stat, i;
+	if(c != NULL){
+		if(c->Nelementos > 0){
+			i = 0;
+			stat = cmp(key, c->elementos[i]);
+			while(stat == True && i < c->Nelementos){
+				i++;
+				stat = cmp(key, c->elementos[i]);
+			}
+			if(stat == True){
+				aux = c->elementos[i];
+				return aux;
+			}
+		}
+	}
+	return NULL;
 }
 //-------------------------- end(funcoes) ---------------------------------------------
