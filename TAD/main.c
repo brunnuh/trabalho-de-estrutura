@@ -9,15 +9,15 @@ typedef struct _dados_{
 	int idade;
 	int NumFilhos;
 	float salario;
-	double cpf;
+	int cpf;
 }dados;
 
-int CompCPF(void *cpf, void *aluno){
+int CompCPF(void*cpf, void *aluno){
 	int *key;
 	dados *alun;
 	key = (int*)cpf;
 	alun = (dados*)aluno;
-	if(*key == alun -> cpf){
+	if(*key == alun->cpf){
 		return True;
 	}else{
 		return False;
@@ -46,12 +46,12 @@ void cadastro(dados *pessoa){
 
 int main(){
 //---------- declaracoes -----------------------
-	cofo *usuarios;
-	dados *pessoa, *RespQuery;
-	int RespInse;
-	int opcao = -1;
-	int NumPessoas, LibPessoa = False;
-
+	cofo *usuarios;// cofo de usuarios
+	dados *pessoa, *RespQuery;// estrutura pessoa; resposta retornada pelo query.
+	int RespInse;// resposta retornada, se foi inserido ou nao
+	int opcao = -1;// opcoes do menu
+	int NumPessoas, LibPessoa = False;// entrada do usuario para saber quantas pessoas vao ser guardadas no cofo; para liberar pessoas quando for sobrescrever outra pessoa
+	int InputCpf;// cpf para ser pesquisado
 
 //---------- end(declaracoes) ------------------	
 
@@ -104,11 +104,12 @@ int main(){
 			}
 		}
 		else if(opcao == 4){
-			if(Gcriado == True){
+			if(Gcriado == True){// erro, entrando na opcao msm depois que ja foi adicionado 
 				if(pessoa != NULL){
-					RespInse = CofInsert(usuarios,(void*)pessoa);
-					free(pessoa);
+					RespInse = CofInsert(usuarios,(void*)(pessoa));
 					if(RespInse == 1){
+						free(pessoa);
+						LibPessoa = False;
 						system("cls");
 						printf("\nAdicionado ao usuario\n");
 						system("PAUSE");
@@ -131,7 +132,9 @@ int main(){
 		}
 		else if(opcao == 5){
 			if(Gcriado == True){
-				RespQuery = (dados*)(usuarios,(void*)0,CompCPF);
+				printf("Buscar Cpf: ");
+				scanf("%d*c",&InputCpf);
+				RespQuery = (dados*)CofQuery(usuarios,(void*)&InputCpf,CompCPF);
 				if(RespQuery != NULL){
 					system("cls");
 					printf("\nnome:%s\ncpf:%d\n", RespQuery->nome, RespQuery->cpf);
