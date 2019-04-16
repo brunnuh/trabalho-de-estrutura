@@ -1,43 +1,38 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <locale.h>
 #include "cofo.h"
-#define True 1
-#define False 0
 
 typedef struct _dados_{
-	char nome[30];
+	char nome[100];
 	int idade;
 	int NumFilhos;
 	float salario;
 	int cpf;
 }dados;
 
-int CompCPF(void*cpf, void *aluno){
-	int *key;
-	dados *alun;
-	key = (int*)cpf;
-	alun = (dados*)aluno;
-	if(*key == alun->cpf){
+int CompCPF(void*cpf, void *pessoa){
+	int key = (int*)cpf;
+	dados* p =  (dados*)pessoa;
+	if(key == p->cpf){
 		return True;
 	}else{
 		return False;
 	}
 }
 
-void cadastro(dados *pessoa){
-	if(Gcriado == False){
-		printf("\nCuidado, seus dados estao sendo sobreposto\nPorfavor, crie um cofo.\n");
-	}
+dados *cadastro(dados *pessoa){
 	printf("Nome: ");
 	scanf("%s*c",&(pessoa -> nome));
-	printf("Idade: ");
-	scanf("%d",&(pessoa -> idade));
+	/*printf("Idade: ");
+	scanf("%d*c",&(pessoa -> idade));
 	printf("Numero de Filhos: ");
-	scanf("%d",&(pessoa -> NumFilhos));
+	scanf("%d*c",&(pessoa -> NumFilhos));
 	printf("Salario: R$");
-	scanf("%f",&(pessoa -> salario));
+	scanf("%f*c",&(pessoa -> salario));*/
 	printf("cpf: ");
-	scanf("%d",&(pessoa -> cpf));
+	scanf("%d*c",&(pessoa -> cpf));
+	return pessoa;
 }
 
 
@@ -47,112 +42,98 @@ void cadastro(dados *pessoa){
 int main(){
 //---------- declaracoes -----------------------
 	cofo *usuarios;// cofo de usuarios
-	dados *pessoa, *RespQuery;// estrutura pessoa; resposta retornada pelo query.
-	int RespInse;// resposta retornada, se foi inserido ou nao
-	int opcao = -1;// opcoes do menu
-	int NumPessoas, LibPessoa = False;// entrada do usuario para saber quantas pessoas vao ser guardadas no cofo; para liberar pessoas quando for sobrescrever outra pessoa
-	int InputCpf;// cpf para ser pesquisado
-
-//---------- end(declaracoes) ------------------	
-
-//---------- Menu -----------------------	
-   	while(opcao != 0){
-		system("cls");
-		printf("1 - Inserir pessoa\n2 - Criar Cofo\n3 - Destruir Cofo\n4 - Inserir ultimos dados cadastrados no Cofo\n5 - Consultar Dados De um usuario pelo cpf\n6 - Remover Dados De um usuario pelo cpf\n7 - Mostrar Cofo Completo\n0 - Sair\n>>>>");
-		scanf("%i*c",&opcao);
+	dados *pessoa;// estrutura pessoa; resposta retornada pelo query.
+	int opcao = -1;//inicia a opcao valendo -1
+	int CpfInput;//a entrada do cpf que o usuario quer procurar
+	int NumUsuarios;//numero max que o cofo usuarios vai suportar de pessoas
+	int RespDest;//pra receber o retorno true ou false da funcao cofdestroy
+	int RespInse;//pra receber o retorno true ou false da funcao cofinsert
+	dados *RespQuery;//pra receber o retorno aux ou NULL da funcao cofquery
+//---------- (Menu) --------------------------
+	while(opcao != 0){
+		printf("1 - Criar Cofo\n2 - Destruir Cofo\n3 - Inserir no Cofo\n4 - Consultar Dados De um usuario pelo cpf\n5 - Remover Dados De um usuario pelo cpf\n6- Mostrar Cofo Completo\n0 - Sair\n>>>>");
+		scanf("%d*c",&opcao);
 		if(opcao == 1){
-			if(LibPessoa == True){
-				free(pessoa);
-				LibPessoa = False;
-			}
-			pessoa = (dados*)malloc(sizeof(dados));
-			if(pessoa != NULL){
-				cadastro(pessoa);
-				LibPessoa = True;
+			if(Gcriado == False){
+				printf("Quantos Usuarios: ");
+				scanf("%d*c",&NumUsuarios);
+				usuarios = CofCreate(NumUsuarios);
+				if(usuarios != NULL){
+					printf("\nCOFO CRIADO...\n");
+				}
+				else{
+					printf("\nCOFO NAO CRIADO...\n");
+				}
 			}
 			else{
-				printf("ERRO, alocacao de pessoa...");
-				free(pessoa);
-				exit(0);
+				printf("\nJa existe um cofo criado...\n");
 			}
 		}
 		else if(opcao == 2){
-			printf("Numero maximo de pessoas no cofo: ");
-			scanf("%d*c",&NumPessoas);
-			usuarios = CofCreate(NumPessoas);// ps: fazer pergunta para o usuario de quantos dados podem ser guardados
-			if(usuarios == NULL){
-				printf("ERRO, na criacao do cofo");
-				CofDestroy(usuarios);
-				exit(0);
+			if(Gcriado == True){
+				if(usuarios != NULL){
+					RespDest = CofDestroy(usuarios);
+					if(RespDest == True){
+						printf("\nCofo Destruido\n");
+					}
+					else{
+						printf("\nFalha na Destruicao...\n");
+					}
+				}
 			}
 			else{
-				system("cls");
-				printf("\n--Cofo criado com sucesso--\n\n");
-				system("PAUSE");
+				printf("\nNao existe cofo para ser apagado.\n");
 			}
 		}
 		else if(opcao == 3){
 			if(Gcriado == True){
-				CofDestroy(usuarios);
-				system("cls");
-				printf("\n--Cofo Destruido com sucesso--\n\n");
-				system("PAUSE");
-			}else{
-				system("cls");
-				printf("\nERRO, cofo nao foi criado ou foi apagado\n\n");
-				system("PAUSE");
+				if(usuarios != NULL){
+					pessoa = (dados*)malloc(sizeof(dados));
+					if(pessoa != NULL ){
+						pessoa = cadastro(pessoa);
+						RespInse = CofInsert(usuarios, (void*)pessoa);
+						if(RespInse == True){
+							printf("\nInserido...\n");
+							//free(pessoa);
+							
+						}
+						else{
+							printf("\nErro na insercao...\n");
+						}
+					}
+				}
+			}
+			else{
+				printf("\nErro, cofo cheio ou nao existe...\n");
 			}
 		}
 		else if(opcao == 4){
-			if(Gcriado == True){// erro, entrando na opcao msm depois que ja foi adicionado 
-				if(pessoa != NULL){
-					RespInse = CofInsert(usuarios,(void*)(pessoa));
-					if(RespInse == 1){
-						free(pessoa);
-						LibPessoa = False;
-						system("cls");
-						printf("\nAdicionado ao usuario\n");
-						system("PAUSE");
+			if(Gcriado == True){
+				if(usuarios != NULL){
+					printf("\nBuscar CPF: ");
+					scanf("%d*c",&CpfInput);
+					RespQuery = (dados*)malloc(sizeof(dados));
+					RespQuery = (dados*)CofQuery(usuarios,(void*)CpfInput,CompCPF);
+					if(RespQuery != NULL){
+						printf("\n\nNome: %s\nCpf:%d\n",(RespQuery->nome),(RespQuery->cpf));
+						//free(RespQuery);
 					}
 					else{
-						system("cls");
-						printf("\nNao foi adicionado ao usuario");
-						system("PAUSE");
-					}		
+						printf("\nErro na busca...\n");
+					}
 				}
-				else{
-					printf("\nERRO, alocacao de pessoa ou ainda nao foi alocada...");
-					exit(0);
-				}	
-			}
-			else{
-				printf("ERRO, criacao do cofo ou nao existe...");
-				exit(0);
+			}else{
+				printf("\nNao existe cofo...\n");
 			}
 		}
-		else if(opcao == 5){
-			if(Gcriado == True){
-				printf("Buscar Cpf: ");
-				scanf("%d*c",&InputCpf);
-				RespQuery = (dados*)CofQuery(usuarios,(void*)&InputCpf,CompCPF);
-				if(RespQuery != NULL){
-					system("cls");
-					printf("\nnome:%s\ncpf:%d\n", RespQuery->nome, RespQuery->cpf);
-					system("PAUSE");
-				}
-				else{
-					printf("\nNao Achou...");
-					exit(0);
-				}
-			}
+		else if(opcao > 8 && opcao < 0){
+			printf("ERRO, Escolha uma opcao valida!");
 		}
-		else if(opcao > 7 || opcao < 0){
-			printf("\nERRO, opcao nao existe...\nTente Novamente.\n");
-			system("PAUSE");
-		}
-		
 	}
-//---------- end(Menu) -----------------------	
-	
+
+
+
+//---------- end(Menu) -----------------------
+
 	return 0;
 }

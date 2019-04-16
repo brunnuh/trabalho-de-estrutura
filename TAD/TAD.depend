@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1555423348 source:c:\users\brunnuh\documents\c\atividades de estrutura\trabalhos\tad\cofo.c
+	<stdio.h>
+	<stdlib.h>
+	"cofo.h"
+
+1555421374 c:\users\brunnuh\documents\c\atividades de estrutura\trabalhos\tad\cofo.h
+

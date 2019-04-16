@@ -1,3 +1,4 @@
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "cofo.h"
@@ -5,7 +6,7 @@
 #define False 0
 #define _cofo_c
 
-int Gcriado = False;// liga e desliga pra saber se estar criado ou nao
+int Gcriado = False;
 
 //-------------------------- estruturas --------------------------------------------
 
@@ -24,15 +25,12 @@ typedef struct _cofo_{ //tipo de estrutura que sera usado para adc as pessoas
 cofo *CofCreate(int n){
 	cofo *c;
 		if(n > 0){ // se o numero que foi passado como parametro for maior que zero
-		c = (cofo*)malloc(sizeof(cofo));// aloca o vetor do tipo cofo com n posicoes
+		c = (cofo*)malloc(n*sizeof(cofo));// aloca o vetor do tipo cofo com n posicoes
 		if(c != NULL){
-			c->elementos = (void**)malloc(sizeof(void*));
-			if(c->elementos != NULL){
-				c->Nelementos = 0;// inicia numero de elementos ocupado com zero
-				c->max = n;// inicia numero maximo de elementos do vetor com n elementos
-				Gcriado = True;
-				return c;
-			}
+			c->Nelementos = 0;// inicia numero de elementos ocupado com zero
+			c->max = n;// inicia numero maximo de elementos do vetor com n elementos
+			Gcriado = True;
+			return c;
 		}else{
 			free(c);//caso dê erro na alocacao, libere
 		}
@@ -43,6 +41,7 @@ cofo *CofCreate(int n){
 int CofInsert(cofo *c, void* n){// vetor , numero à ser add
 	if(c != NULL){
 		if(c->Nelementos < c->max){// se numero de elementos for menor que o numero max do vetor
+			c->elementos = (void**)malloc(sizeof(void*));
 			c->elementos[c->Nelementos] = n; //o vetor recebe o n, na posicao numero de elementos
 			c->Nelementos ++;// o numero de elementos do vetor é atualizado
 			return True;
@@ -62,21 +61,28 @@ int CofDestroy(cofo *c){
 	}
 	return False;
 }
+int CofExist(cofo *c){// como saber se ele ja foi criado, sendo que nao tem como testar != NULL
+	if(c -> max > 0){
+		return True;
+	}	
+	return False;
+}
 
-void *CofQuery(cofo *c, void *key, int(*cmp)(void*,void*)){
-	int stat, i;
+void *CofQuery(cofo *c, void* key, int(*cmp)(void*,void*)){
+	void *aux;
+	int stat = 0, i;
 	if(c != NULL){
+		printf("cpf: %i",(int*)key);
 		if(c->Nelementos > 0){
 			i = 0;
-			stat = cmp((void*)key, c->elementos[i]);
-			while(stat == False && i < c->Nelementos){
+			stat = cmp(key, c->elementos[i]);
+			while(stat == True && i < c->Nelementos){
 				i++;
 				stat = cmp(key, c->elementos[i]);
 			}
-			
 			if(stat == True){
-				
-				return c->elementos[i];
+				aux = c->elementos[i];
+				return aux;
 			}
 		}
 	}
