@@ -71,15 +71,61 @@ void *CofQuery(cofo *c, void *key, int(*cmp)(void*,void*)){
 			stat = cmp((void*)key, c->elementos[i]);
 			while(stat == False && i < c->Nelementos){
 				i++;
-				stat = cmp(key, c->elementos[i]);
+				stat = cmp((void*)key, c->elementos[i]);
 			}
 			
 			if(stat == True){
-				
 				return c->elementos[i];
 			}
 		}
 	}
 	return NULL;
 }
+
+void *CofRemove(cofo *c, void *key, int(*cmp)(void*,void*)){
+	void *aux;
+	int i,j,stat;
+	aux = (void**)malloc(sizeof(void*));
+	if(c != NULL){
+		if(aux != NULL){
+			if(c->Nelementos > 0){
+				i = -1;
+				while(stat ==False && i < c->Nelementos){
+					i++;
+					stat = cmp((void*)key,c->elementos[i]);	
+				}
+				if(stat == True){
+					aux = c->elementos[i];
+					for(j = i;j < c->Nelementos;j++){
+						c->elementos[j] = c->elementos[j+1];	
+					}
+					c->Nelementos--;
+					return aux;
+				}
+			}
+		}
+	}
+	free(aux);
+	return NULL;	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //-------------------------- end(funcoes) ---------------------------------------------

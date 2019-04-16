@@ -44,11 +44,12 @@ int main(){
 	cofo *usuarios;// cofo de usuarios
 	dados *pessoa;// estrutura pessoa; resposta retornada pelo query.
 	int opcao = -1;//inicia a opcao valendo -1
-	int CpfInput;//a entrada do cpf que o usuario quer procurar
+	int CpfInput;//a entrada do cpf que o usuario quer procurar/apagar
 	int NumUsuarios;//numero max que o cofo usuarios vai suportar de pessoas
 	int RespDest;//pra receber o retorno true ou false da funcao cofdestroy
 	int RespInse;//pra receber o retorno true ou false da funcao cofinsert
 	dados *RespQuery;//pra receber o retorno aux ou NULL da funcao cofquery
+	dados *RespRemove;//pra receber o retorno aux ou NULL da funcao cofremove
 //---------- (Menu) --------------------------
 	while(opcao != 0){
 		printf("1 - Criar Cofo\n2 - Destruir Cofo\n3 - Inserir no Cofo\n4 - Consultar Dados De um usuario pelo cpf\n5 - Remover Dados De um usuario pelo cpf\n6- Mostrar Cofo Completo\n0 - Sair\n>>>>");
@@ -124,6 +125,26 @@ int main(){
 				}
 			}else{
 				printf("\nNao existe cofo...\n");
+			}
+		}
+		else if(opcao == 5){
+			if(Gcriado == True){
+				if(usuarios != NULL){
+					printf("\nBuscar CPF: ");
+					scanf("%d*c",&CpfInput);
+					RespRemove = (dados*)malloc(sizeof(dados));
+					RespRemove = (dados*)CofRemove(usuarios,(void*)CpfInput,CompCPF);
+					if(RespRemove != NULL){
+						printf("\n\nNome: %s\nCpf:%d\n",(RespRemove->nome),(RespRemove->cpf));
+						free(RespQuery);
+					}
+					else{
+						printf("\nErro na remocao...\n");
+					}
+				}
+			}
+			else{
+				printf("\nCofo nao existe...\n");
 			}
 		}
 		else if(opcao > 8 && opcao < 0){
