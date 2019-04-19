@@ -101,6 +101,9 @@ void *CofRemove(cofo *c, void *key, int(*cmp)(void*,void*)){
 						c->elementos[j] = c->elementos[j+1];	
 					}
 					c->Nelementos--;
+					if(c->Nelementos == 0){
+						Gcriado == False;
+					}
 					return aux;
 				}
 			}

@@ -53,7 +53,11 @@ int main(){
 	dados *RespGet;//pra receber o retorno das variaveis contida dentro dele
 //---------- (Menu) --------------------------
 	while(opcao != 0){
-		printf("\n1 - Criar Cofo\n2 - Destruir Cofo\n3 - Inserir no Cofo\n4 - Consultar Dados De um usuario pelo cpf\n5 - Remover Dados De um usuario pelo cpf\n6- Mostrar Cofo Completo\n0 - Sair\n>>>>");
+		system("cls");
+		printf("================================================");
+		printf("\n1 - Criar Cofo\n2 - Destruir Cofo\n3 - Inserir no Cofo\n4 - Consultar Dados De um usuario pelo cpf\n5 - Remover Dados De um usuario pelo cpf\n6- Mostrar Cofo Completo\n0 - Sair");
+		printf("\n================================================");
+		printf("\n>>>>");
 		scanf("%d*c",&opcao);
 		if(opcao == 1){
 			if(Gcriado == False){
@@ -62,18 +66,24 @@ int main(){
 				usuarios = CofCreate(NumUsuarios);
 				if(usuarios != NULL){
 					system("cls");
-					printf("\nCOFO CRIADO...\n\n");
+					printf("=============================");
+					printf("\n\tCOFO CRIADO...\n");
+					printf("=============================\n");
 					system("pause");
 				}
 				else{
 					system("cls");
-					printf("\nCOFO NAO CRIADO...\n");
+					printf("=============================");
+					printf("\n\tCOFO NAO CRIADO...\n");
+					printf("=============================\n");
 					system("pause");
 				}
 			}
 			else{
 				system("cls");
-				printf("\nJa existe um cofo criado...\n");
+				printf("=============================");
+				printf("\n Ja existe um cofo criado...\n");
+				printf("=============================\n");
 				system("pause");
 			}
 		}
@@ -83,19 +93,25 @@ int main(){
 					RespDest = CofDestroy(usuarios);
 					if(RespDest == True){
 						system("cls");
-						printf("\nCofo Destruido\n");
+						printf("=============================");
+						printf("\n\tCOFO DESTRUIDO\n");
+						printf("=============================\n");
 						system("pause");	
 					}
-					else{
+					else if(RespDest == False){
 						system("cls");
-						printf("\nFalha na Destruicao...\n");
+						printf("================================");
+						printf("\n\tFalha na Destruicao\n");
+						printf("================================\n");
 						system("pause");
 					}
 				}
 			}
 			else{
 				system("cls");
-				printf("\nNao existe cofo para ser apagado.\n");
+				printf("==================================");
+				printf("\n Nao existe cofo para ser apagado.\n");
+				printf("==================================\n");
 				system("pause");
 			}
 		}
@@ -108,18 +124,28 @@ int main(){
 						RespInse = CofInsert(usuarios, (void*)pessoa);
 						if(RespInse == True){
 							system("cls");
-							printf("\nInserido...\n");
+							printf("===============================");
+							printf("\n\tInserido...\n");
+							printf("===============================\n");
 							//free(pessoa);
 							system("pause");			
 						}
-						else{
-							printf("\nErro na insercao...\n");
+						else if(RespInse == False){
+							system("cls");
+							printf("===============================");
+							printf("\n\tErro, cofo cheio...\n");
+							printf("===============================\n");
+							system("pause");
 						}
 					}
 				}
 			}
 			else{
-				printf("\nErro, cofo cheio ou nao existe...\n");
+				system("cls");
+				printf("=================================");
+				printf("\n Erro, cofo nao existe...\n");
+				printf("================================\n");
+				system("pause");
 			}
 		}
 		else if(opcao == 4){
@@ -130,15 +156,27 @@ int main(){
 					RespQuery = (dados*)malloc(sizeof(dados));// ps: criar funcao para alocar
 					RespQuery = (dados*)CofQuery(usuarios,(void*)&CpfInput,CompCPF);
 					if(RespQuery != NULL){
-						printf("\n\nNome: %s\nCpf:%d\n",(RespQuery->nome),(RespQuery->cpf));
+						system("cls");
+						printf("=================================");
+						printf("\n\t Nome:\t%s\n\t Cpf:\t%d\n",(RespQuery->nome),(RespQuery->cpf));
+						printf("================================\n");
+						system("pause");
 						//free(RespQuery);
 					}
 					else{
-						printf("\nErro na busca...\n");
+						system("cls");
+						printf("=================================");
+						printf("\n\tErro na busca...\n");
+						printf("=================================\n");
+						system("pause");	
 					}
 				}
 			}else{
-				printf("\nNao existe cofo...\n");
+				system("cls");
+				printf("=================================");
+				printf("\n\tNao existe cofo...\n");
+				printf("================================\n");
+				system("pause");
 			}
 		}
 		else if(opcao == 5){
@@ -149,16 +187,28 @@ int main(){
 					RespRemove = (dados*)malloc(sizeof(dados));
 					RespRemove = (dados*)CofRemove(usuarios,(void*)&CpfInput,CompCPF);
 					if(RespRemove != NULL){
-						printf("\n\nNome: %s\nCpf:%d\n",(RespRemove->nome),(RespRemove->cpf));
-						free(RespQuery);
+						system("cls");
+						printf("================= REMOVIDO =================");
+						printf("\n\t\tNome:\t%s\n\t\tCpf:\t%d\n",(RespRemove->nome),(RespRemove->cpf));
+						printf("=============================================\n");
+						system("pause");
+						//free(RespQuery);
 					}
 					else{
-						printf("\nErro na remocao...\n");
+						system("cls");
+						printf("===================================");
+						printf("\n Nao Existe ou Ja foi removido\n");
+						printf("===================================\n");
+						system("pause");
 					}
 				}
 			}
 			else{
-				printf("\nCofo nao existe...\n");
+				system("cls");
+				printf("===================================");
+				printf("\n Cofo nao existe...\n");
+				printf("===================================\n");
+				system("pause");
 			}
 		}
 		else if(opcao == 6){
@@ -168,31 +218,53 @@ int main(){
 					if(RespGet != NULL){
 						RespGet = (dados*)CofGetFirst(usuarios);//pedindo o primeiro dado, para zerar o cur do cofo
 						if(RespGet != NULL){
-							printf("\nnome: %s\nCpf: %i",RespGet->nome,RespGet->cpf);
+							system("cls");
+							printf("=============== COFO ===============");
+							printf("\n\tnome:\t%s\n\tCpf:\t%i",RespGet->nome,RespGet->cpf);
 							for(i=1;i < NumUsuarios;i++){
 								RespGet = (dados*)CofGetNext(usuarios);
-								printf("\nnome: %s\nCpf: %i",RespGet->nome,RespGet->cpf);
+								printf("\n\n\tnome:\t%s\n\tCpf:\t%i",RespGet->nome,RespGet->cpf);
 							}
+							printf("\n===================================\n");
+							system("pause");
 						}else{
-							printf("ERRO,getfirst retornou NULL");
+							system("cls");
+							printf("===================================\n");
+							printf(" ERRO,getfirst retornou NULL");
+							printf("\n===================================\n");
+							system("pause");
 						}
 					}else{
-						printf("ERRO, na alocacao do RespGet");
+						system("cls");
+						printf("===================================\n");
+						printf(" ERRO, na alocacao do RespGet");
+						printf("\n===================================\n");
+						system("pause");
 					}
 				}
 			}
 			else{
+				system("cls");
+				printf("===================================\n");
 				printf("\nErro,Nao existe cofo\n");
+				printf("\n===================================\n");
+				system("pause");
 			}
 		}
-		else if(opcao > 8 && opcao < 0){
-			printf("ERRO, Escolha uma opcao valida!");
+		else if(opcao > 7 || opcao < 0){
+			system("cls");
+			printf("===================================\n");
+			printf(" ERRO, Escolha uma opcao valida!");
+			printf("\n===================================\n");
+			system("pause");
 		}
 	}
 
-
-
 //---------- end(Menu) -----------------------
-
+	system("cls");
+	printf("===================================\n");
+	printf("\tFINALIZANDO...");
+	printf("\n===================================\n");
+	system("pause");
 	return 0;
 }
