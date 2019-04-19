@@ -13,7 +13,7 @@ typedef struct _cofo_{ //tipo de estrutura que sera usado para adc as pessoas
 	void** elementos; // elemento do vetor
 	int max; //numero maximo de elementos no vetor.
 	int Nelementos; // numero de elementos ocupado no max.
-	//int cmp; //
+	int cur;
 }cofo;
 //-------------------------- end(estruturas) ----------------------------------------
 
@@ -23,13 +23,14 @@ typedef struct _cofo_{ //tipo de estrutura que sera usado para adc as pessoas
 //-------------------------- funcoes ------------------------------------------------
 cofo *CofCreate(int n){
 	cofo *c;
-		if(n > 0){ // se o numero que foi passado como parametro for maior que zero
+	if(n > 0){ // se o numero que foi passado como parametro for maior que zero
 		c = (cofo*)malloc(sizeof(cofo));// aloca o vetor do tipo cofo com n posicoes
 		if(c != NULL){
 			c->elementos = (void**)malloc(sizeof(void*));
 			if(c->elementos != NULL){
 				c->Nelementos = 0;// inicia numero de elementos ocupado com zero
 				c->max = n;// inicia numero maximo de elementos do vetor com n elementos
+				c->cur = -1;//ajuda a retorna o cofo por posicao
 				Gcriado = True;
 				return c;
 			}
@@ -108,8 +109,27 @@ void *CofRemove(cofo *c, void *key, int(*cmp)(void*,void*)){
 	free(aux);
 	return NULL;	
 }
+void *CofGetFirst(cofo *c){//se quiser todo o cofo, sempre chamar essa funcao primeiro, para zerar o cur
+	if(c != NULL){
+		if(c->Nelementos > 0){
+			c->cur = 0; // sempre o primeiro elemento
+			return c->elementos[c->cur];
+		}
+	}
+	return NULL;
+}
 
-
+void *CofGetNext(cofo *c){
+	if(c != NULL){
+		if(c->Nelementos > 0){
+			c->cur++;
+			if(c->cur < c->Nelementos){
+				return c->elementos[c->cur];
+			}
+		}
+	}
+	return NULL;
+}
 
 
 
