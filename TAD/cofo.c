@@ -65,12 +65,11 @@ int CofDestroy(cofo *c){
 }
 
 void *CofQuery(cofo *c, void *key, int(*cmp)(void*,void*)){
-	int stat, i;
+	int stat = False, i = 0;
 	if(c != NULL){
 		if(c->Nelementos > 0){
-			i = 0;
 			stat = cmp((void*)key, c->elementos[i]);
-			while(stat == False && i < c->Nelementos){
+			while(stat == False && i < c->Nelementos - 1){
 				i++;
 				stat = cmp((void*)key, c->elementos[i]);
 			}
