@@ -89,13 +89,13 @@ void *CofRemove(cofo *c, void *key, int(*cmp)(void*,void*)){
 	if(c != NULL){
 		if(aux != NULL){
 			if(c->Nelementos > 0){
-				while(stat == False && i < c->Nelementos){
+				while(stat == False && i < c->Nelementos - 1){
 					i++;
 					stat = cmp((void*)key,c->elementos[i]);	
 				}
 				if(stat == True){
 					aux = c->elementos[i];
-					for(j = i;j < c->Nelementos;j++){
+					for(j = i;j < c->Nelementos - 1;j++){
 						c->elementos[j] = c->elementos[j+1];	
 					}
 					c->Nelementos--;
