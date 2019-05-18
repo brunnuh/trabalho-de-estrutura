@@ -15,6 +15,7 @@ typedef struct _sllelem_{
 
 typedef struct _sllist_{
 	SLLNODE *first;
+	void *cur;
 }sllist;
 //-------------------------- end(estruturas) ----------------------------------------
 
@@ -68,7 +69,26 @@ int sllDestroy(sllist *l){
 	}
 	return False;
 }
-
+void *sllGetFirst(sllist *l){
+	
+	if(l != NULL){
+		if(l->first != NULL){
+			l->cur = l->first->next;
+			return (l->first)->data;
+		}
+	}
+}
+void *sllGetNext(sllist *l){
+	SLLNODE *aux;
+	if(l!= NULL){
+		if((l->cur) != NULL){
+			aux = l->cur;
+			l->cur = aux->next;
+			return aux->data;	
+		}
+	}
+	return NULL;
+}
 
 
 

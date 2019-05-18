@@ -22,12 +22,12 @@ dados *Aloca(void){
 dados *Cadastro(dados *pessoa){
 	printf("Nome:");
 	scanf("%s*c",&(pessoa->nome));
-	printf("Idade:");
+	/*printf("Idade:");
 	scanf("%i*c",&(pessoa->idade));
 	printf("Filhos:");
 	scanf("%i*c",&(pessoa->NumFilhos));
 	printf("Salario:R$");
-	scanf("%f*c",&(pessoa->salario));
+	scanf("%f*c",&(pessoa->salario));*/
 	printf("CPF:");
 	scanf("%i*c",&(pessoa->cpf));
 	return pessoa;
@@ -35,6 +35,7 @@ dados *Cadastro(dados *pessoa){
 int main(){
 	sllist *usuarios;
 	dados *pessoa;
+	dados *RespGetF, *RespGetN;
 	int opcao = -1;
 	int RespDest, RespInserf;
 	while(opcao != 0){
@@ -108,6 +109,35 @@ int main(){
 				system("cls");
 				printf("Nao Existe Lista\n");
 				system("pause");	
+			}
+		}else if(opcao == 6){
+			if(Gcriado == True){
+				if(usuarios != NULL){
+					RespGetF = Aloca();
+					if(RespGetF != NULL){
+						RespGetF = (dados*)sllGetFirst(usuarios);
+						if(RespGetF != NULL){
+							system("cls");
+							printf("\nnome: %s\nCPF: %i\n",(RespGetF -> nome),(RespGetF->cpf));
+							RespGetN = Aloca();
+							if(RespGetN != NULL){
+								RespGetN = RespGetF;
+								while(RespGetN != NULL){
+									RespGetN = (dados*)sllGetNext(usuarios);
+									if(RespGetN != NULL){
+										printf("\nnome: %s\nCPF: %i\n",(RespGetN -> nome),(RespGetN->cpf));
+										
+									}
+								}
+								system("pause");	
+							}
+						}else{
+							system("cls");
+							printf("ERRO EM RETORNO DE LISTA");
+							system("pause");
+						}
+					}
+				}
 			}
 		}//fim opcao
 		

@@ -11,12 +11,14 @@ typedef struct _sllist_ sllist;
 	int sllDestroy(sllist *l);
 	void *sllRemovefirst(sllist *l);
 	//void *CofQuery(cofo *c, void *key, int(*cmp)(void *,void *));
-	//void *CofGetNext(cofo *c);
-	//void *CofGetFirst(cofo *c);
+	void *sllGetNext(sllist *l);
+	void *sllGetFirst(sllist *l);
 #else
 	extern sllist *sllCreate();
 	extern int sllInsertFirst(sllist *l, void* elem);
 	extern int sllDestroy(sllist *l);
 	extern void *sllRemovefirst(sllist *l);
+	extern void *sllGetNext(sllist *l);
+	extern void *sllGetFirst(sllist *l);
 #endif
 #endif
