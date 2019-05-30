@@ -7,17 +7,18 @@ typedef struct _sllelem_ SLLNODE;
 typedef struct _sllist_ sllist;
 #ifdef _sll_c
 	sllist *sllCreate();
-	int sllInsertFirst(sllist *l, void* elem);
+	int sllInsertLast(sllist *l, void *data);
 	int sllDestroy(sllist *l);
-	void *sllRemovefirst(sllist *l);
-	//void *CofQuery(cofo *c, void *key, int(*cmp)(void *,void *));
+	void *sllQuery(sllist *l, void *key, int(*cmp)(void *,void *));
+	void *sllRemoveSpec(sllist *l, void *key, int(*cmp)(void*,void*));
 	void *sllGetNext(sllist *l);
 	void *sllGetFirst(sllist *l);
 #else
 	extern sllist *sllCreate();
-	extern int sllInsertFirst(sllist *l, void* elem);
+	extern int sllInsertLast(sllist *l, void *data);
 	extern int sllDestroy(sllist *l);
-	extern void *sllRemovefirst(sllist *l);
+	extern void *sllQuery(sllist *l, void *key, int(*cmp)(void *,void *));
+	extern void *sllRemoveSpec(sllist *l, void *key, int(*cmp)(void*,void*));
 	extern void *sllGetNext(sllist *l);
 	extern void *sllGetFirst(sllist *l);
 #endif
